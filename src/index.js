@@ -1,11 +1,16 @@
-import express from "express";
+// doc: https://github.com/websockets/ws#protocol-support
+// doc: https://javascript.info/websocket#chat-example
+import WebSocket from "ws";
 
-const app = express();
+const webSocketServer = new WebSocket.Server({ port: 8080 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-
-app.listen(4000, () => {
-  console.log("Listening");
+webSocketServer.on("connection", (ws) => {
+  console.log("someone connected");
+  ws.on("message", (message) => {
+    webSocketServer.clients.forEach((client) => {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  });
 });
