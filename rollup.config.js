@@ -18,7 +18,7 @@ export default {
       plugins: [terser()]
     }
   ],
-  external: ["ws"],
+  external: ["ws", "fs", "https", "http"],
   watch: { include: "src/**" },
   plugins: [
     babel({
