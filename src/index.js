@@ -26,6 +26,7 @@ webSocketServer.on("connection", (ws) => {
       let connectionData = {
         connections: connections[data.guid].length
       };
+      console.log(data);
       ws.send(JSON.stringify(connectionData));
       return;
     }
@@ -47,9 +48,11 @@ webSocketServer.on("connection", (ws) => {
     let id = Object.keys(connections).find((key) =>
       connections[key].includes(ws)
     );
-    connections[id] = connections[id].filter((value) => value != ws);
-    if (connections[id].length == 0) {
-      delete connections[id];
+    if (id != null) {
+      connections[id] = connections[id].filter((value) => value != ws);
+      if (connections[id].length == 0) {
+        delete connections[id];
+      }
     }
   });
 });
